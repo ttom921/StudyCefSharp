@@ -1,5 +1,7 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,10 +12,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp.Controls;
 
 namespace WindowsFormsApp
 {
-    
+
     public partial class MainForm : Form
     {
         private ChromiumWebBrowser chromeBrowser;
@@ -34,7 +37,8 @@ namespace WindowsFormsApp
             {
                 //是否使用cache
                 //By default CefSharp will use an in-memory cache, you need to specify a Cache Folder to persist data
-                CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache")
+                CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache"),
+                //LogSeverity = LogSeverity.Verbose,
             };
             ////設置是否使用GPU
             ////settings.CefCommandLineArgs.Add("disable-gpu", "1");
@@ -48,9 +52,7 @@ namespace WindowsFormsApp
             chromeBrowser = new ChromiumWebBrowser("http://localhost:4200/");
             this.bwpanel.Controls.Add(chromeBrowser);
             chromeBrowser.Dock = DockStyle.Fill;
-            
         }
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Cef.Shutdown();
@@ -58,7 +60,46 @@ namespace WindowsFormsApp
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            chromeBrowser.ExecuteScriptAsync("callByNet('參數1','參數2')");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //dynamic MyDynamic = new System.Dynamic.ExpandoObject();
+            //MyDynamic.name = "orange";
+            //MyDynamic.price = 100;
+            dynamic MyDynamic = new
+            {
+                name = "orange",
+                price = 100
+            };
+            string output = JsonConvert.SerializeObject(MyDynamic);
+            object[] args = { output };
+            //string strjs = $"callbyNetobj({output})";
+            chromeBrowser.ExecuteScriptAsync("callbyNetobj", args);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var dlist = new List<dynamic>();
+            for (int i = 0; i < 3; i++)
+            {
+                dynamic dyna = new
+                {
+                    name = $"cnetname={i}",
+                    price = 100 + i * 10
+                };
+                dlist.Add(dyna);
+            }
+            string output = JsonConvert.SerializeObject(dlist);
+            //Console.WriteLine(output);
+            object[] args = { output };
+            chromeBrowser.ExecuteScriptAsync("callbyNetobj", args);
         }
     }
 }

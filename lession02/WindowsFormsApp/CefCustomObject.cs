@@ -58,6 +58,8 @@ namespace WindowsFormsApp
             }
             foreach (var item in dlist)
             {
+               
+
                 Console.Write(item.name + ":" + item.price + "\r\n");
             }
             //Console.WriteLine(dlist);

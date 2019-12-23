@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Cefwebui</title>
@@ -7,7 +8,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
+
 <body>
   <app-root></app-root>
 </body>
+<script type="text/javascript">
+  function callByNet(arg1, arg2) {
+    let alertMessage = "arg1 is " + arg1 + " and arg2 is " + arg2 + "!";
+    //alert(alertMessage);
+    window['AppComponentRef'].callByNet(arg1, arg2);
+  }
+  function callbyNetobj(jsonstr) {
+    //alert(jsonstr);
+    window['AppComponentRef'].callbyNetobj(jsonstr);
+  }
+  function callbyNetobjlst(jsonstr) {
+    //alert(jsonstr);
+    console.log(jsonstr);
+    console.info(jsonstr);
+    window['AppComponentRef'].callbyNetobjlst(jsonstr);
+  }
+</script>
+
 </html>
