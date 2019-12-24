@@ -52,6 +52,7 @@ namespace WindowsFormsApp
             chromeBrowser = new ChromiumWebBrowser("http://localhost:4200/");
             this.bwpanel.Controls.Add(chromeBrowser);
             chromeBrowser.Dock = DockStyle.Fill;
+            chromeBrowser.KeyboardHandler = new CEFKeyBoardHander();
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
